@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/toolbar"
+        app:title="账户设置"
+        app:titleTextAppearance="@style/Toolbartile"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <RelativeLayout
+        android:id="@+id/account_setting"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_below="@id/toolbar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ic_cloud"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/cloud" />
+
+            <TextView
+                android:id="@+id/text_cloud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/ic_cloud"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/ic_cloud"
+                android:textSize="16sp"
+                android:text="云端同步" />
+
+            <Button
+                android:id="@+id/bt_cloud_update"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/update" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/general_title"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@id/account_setting"
+        android:layout_height="20dp"
+        android:text="通用设置" />
+    <RelativeLayout
+        android:id="@+id/general_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/general_title">
+        <!--响铃-->
+        <RelativeLayout
+            android:id="@+id/ring"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ic_ring"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/ring" />
+
+            <TextView
+                android:id="@+id/text_ring"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/ic_ring"
+                android:gravity="center_vertical"
+                android:textSize="16sp"
+                android:text="允许响铃" />
+
+            <ToggleButton
+                android:id="@+id/bt_ring_toggle"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignBaseline="@id/ic_ring"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/toggle_selector"
+                android:textOff="@null"
+                android:textOn="@null" />
+        </RelativeLayout>
+
+        <!--震动-->
+        <RelativeLayout
+            android:id="@+id/vibrate"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_below="@id/ring"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ic_vibrate"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/vibrate" />
+
+            <TextView
+                android:id="@+id/text_vibrate"
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/ic_vibrate"
+                android:gravity="center_vertical"
+                android:textSize="16sp"
+                android:text="允许震动" />
+
+            <ToggleButton
+                android:id="@+id/bt_vibrate_toggle"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignBaseline="@id/ic_vibrate"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/toggle_selector"
+                android:textOff="@null"
+                android:textOn="@null" />
+        </RelativeLayout>
+
+        <!--锁屏时显示to-do list-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal"
+            android:layout_below="@id/vibrate">
+
+            <ImageView
+                android:id="@+id/ic_show_todolist"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/locked" />
+
+            <TextView
+                android:id="@+id/text_show_todolist"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="锁屏显示to-do list"
+                android:textSize="16sp"
+                android:layout_toRightOf="@id/ic_show_todolist" />
+
+            <ToggleButton
+                android:id="@+id/bt_show_toggle"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignBaseline="@id/ic_show_todolist"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/toggle_selector"
+                android:textOff="@null"
+                android:textOn="@null" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/white_list_title"
+        android:layout_width="match_parent"
+        android:layout_below="@id/general_setting"
+        android:layout_marginLeft="15dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="30dp"
+        android:text="白名单"/>
+    <RelativeLayout
+        android:id="@+id/white_list"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/white_list_title"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:id="@+id/white_l">
+            <ImageView
+                android:id="@+id/white_list_icon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/whitelist"/>
+
+            <TextView
+                android:id="@+id/white_list_text"
+                android:layout_width="fill_parent"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:text="开启白名单"
+                android:textSize="16sp"
+                android:layout_toRightOf="@id/white_list_icon" />
+
+            <ToggleButton
+                android:id="@+id/bt_white_list_toggle"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignBaseline="@id/white_list_icon"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="25dp"
+                android:background="@drawable/toggle_selector"
+                android:gravity="center_vertical"
+                android:textOff="@null"
+                android:textOn="@null" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <Button
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:text="注销账户"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:layout_height="50dp" />
+</RelativeLayout>

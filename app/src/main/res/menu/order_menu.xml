@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/comprehensive"
+            android:icon="@drawable/compare"
+            android:title="综合" />
+        <item
+            android:id="@+id/cost_performance"
+            android:icon="@drawable/plan"
+            android:title="性价比" />
+        <item
+            android:id="@+id/nac_article"
+            android:icon="@drawable/article"
+            android:title="价格升序" />
+        <item
+            android:id="@+id/nav_favorite"
+            android:icon="@drawable/favorite"
+            android:title="价格降序" />
+</menu>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.administrator.search_on_toolbar.SearchOnToolBarActivity">
+    <item
+        android:id="@+id/menu_search"
+        android:title="搜帖"
+        android:icon="@drawable/search"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_filter"
+        android:icon="@drawable/filter"
+        android:title="筛选"
+        android:visible="false"
+        app:showAsAction="always"/>
+</menu>

@@ -1,66 +1,54 @@
 package com.easybuild.android;
 
-import android.app.AppOpsManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
+import com.easybuild.android.db.Type;
+import com.easybuild.android.db.User;
+import com.easybuild.android.util.LogUtil;
+
+import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     private DrawerLayout mDrawerLayout;
+    public static MainActivity instance = null;
 
-    private static final int MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS = 1101;
-    private EditText editText;
-    public static long time = 0;
+    private SharedPreferences pref;
+    private String userID;
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS)
-        {
-            if (!hasPermission())
-            {
-                //若用户未开启权限，则引导用户开启“Apps with usage access”权限
-                startActivityForResult(
-                        new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
-                        MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
-            }
-        }
-    }
-
-    //检测用户是否对本app开启了“Apps with usage access”权限
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private boolean hasPermission()
-    {
-        AppOpsManager appOps = (AppOpsManager)
-                getSystemService(Context.APP_OPS_SERVICE);
-        int mode = 0;
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)
-        {
-            mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
-                    android.os.Process.myUid(), getPackageName());
-        }
-        return mode == AppOpsManager.MODE_ALLOWED;
-    }
-
+    private Type[] types = {new Type("全部", R.drawable.imgall,"all"), new Type("商品", R.drawable.imgitem,"item")
+            , new Type("CPU", R.drawable.imgcpu,"cpu"), new Type("GPU", R.drawable.imggpu,"gpu"),
+            new Type("主机", R.drawable.imgcase,"case"), new Type("电源", R.drawable.imgpower,"power"),
+            new Type("水冷", R.drawable.imgcoolerwater,"cooler_water"), new Type("风冷", R.drawable.imgcoolerwind,"cooler_wind"),
+            new Type("HDD", R.drawable.imghdd,"hdd"), new Type("SSD", R.drawable.imgssd,"ssd"),
+            new Type("内存", R.drawable.imgmemory,"memory"), new Type("主板", R.drawable.imgmotherboard,"motherboard")};
+    private List<Type> typeList = new ArrayList<>();
+    private TypeAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        instance = this;
         android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -71,35 +59,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_reorder_black_24dp);
         }
-        navView.setCheckedItem(R.id.nav_call);
+        initTypes();
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new TypeAdapter(typeList);
+        recyclerView.setAdapter(adapter);
+
         navView.setNavigationItemSelectedListener(new NavigationView
                 .OnNavigationItemSelectedListener()
         {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item)
             {
-                mDrawerLayout.closeDrawers();
+                switch (item.getItemId())
+                {
+                    case R.id.nav_compare:
+                        break;
+                    case R.id.nav_setting:
+                        Intent intent_setting = new Intent(MainActivity.this, SettingsActivity
+                                .class);
+                        startActivity(intent_setting);
+                        break;
+                }
                 return true;
             }
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        userID = pref.getString("userID", null);
+        View view = navView.getHeaderView(0);
+        TextView tv_username = view.findViewById(R.id.nav_username);
+        tv_username.setText(userID);
+        User user = DataSupport.where("userID = ?", userID).findFirst(User.class);
+        String nickname = user.getNickname();
+        String profile_photo = user.getProfile_photo();
+        TextView nick_text = view.findViewById(R.id.nav_nickname);
+        nick_text.setText(nickname);
+        de.hdodenhof.circleimageview.CircleImageView photo = view.findViewById(R.id.icon_image);
+        Glide.with(MainActivity.this).load(profile_photo).signature(new StringSignature(pref
+                .getString("latest", ""))).into(photo);
+        LogUtil.e("test", "Hello");
+
+        photo.setOnClickListener(new View.OnClickListener()
         {
-            if (!hasPermission())
+            @Override
+            public void onClick(View v)
             {
-                startActivityForResult(
-                        new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
-                        MY_PERMISSIONS_REQUEST_PACKAGE_USAGE_STATS);
+                Intent intent_toUserInfo = new Intent(MainActivity.this, UserInfoActivity.class);
+                startActivityForResult(intent_toUserInfo, 1);
+            }
+        });
+    }
+
+    private void initTypes()
+    {
+        typeList.clear();
+        for (int i = 0; i < types.length; i++)
+        {
+            typeList.add(types[i]);
+            Type newtype = DataSupport.where("TypeName = ?",types[i].getTypeName()).findFirst(Type.class);
+            if(newtype == null)
+            {
+                types[i].save();
+                LogUtil.e("MainActivity","=========save==========");
+            }else
+            {
+                LogUtil.e("MainActivity","Not save!!!!!!!!!!!");
             }
         }
-
-        editText = findViewById(R.id.edit_text);
-        Button confirm = findViewById(R.id.confirm);
-        Button start = findViewById(R.id.start);
-        Button stop = findViewById(R.id.stop);
-        confirm.setOnClickListener(this);
-        start.setOnClickListener(this);
-        stop.setOnClickListener(this);
     }
 
     @Override
@@ -119,21 +147,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         switch (v.getId())
         {
-            case R.id.confirm:
-                time = Integer.valueOf(editText.getText().toString());
-                break;
-            case R.id.start:
-                MyService.isRun = true;
-                Intent startIntant = new Intent(this, MyService.class);
-                startService(startIntant);
-                break;
-            case R.id.stop:
-                MyService.isRun = false;
-                break;
             default:
                 break;
         }
     }
-
-
 }

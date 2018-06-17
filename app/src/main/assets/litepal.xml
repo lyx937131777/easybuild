@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+
+    <dbname value="easy_build" />
+
+    <version value="2" />
+
+    <list>
+        <mapping class="com.easybuild.android.db.User" />
+        <mapping class="com.easybuild.android.db.Type" />
+    </list>
+
+</litepal>

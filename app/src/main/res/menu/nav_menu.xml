@@ -2,24 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_call"
-            android:icon="@drawable/nav_call"
-            android:title="Call" />
+            android:id="@+id/nav_compare"
+            android:icon="@drawable/compare"
+            android:title="易鉴对比" />
         <item
-            android:id="@+id/nav_friends"
-            android:icon="@drawable/nav_friends"
-            android:title="Friends" />
+            android:id="@+id/nav_plan"
+            android:icon="@drawable/plan"
+            android:title="易鉴装机" />
         <item
-            android:id="@+id/nav_location"
-            android:icon="@drawable/nav_location"
-            android:title="Location" />
+            android:id="@+id/nac_article"
+            android:icon="@drawable/article"
+            android:title="易鉴好文" />
         <item
-            android:id="@+id/nav_mail"
-            android:icon="@drawable/nav_mail"
-            android:title="Mail" />
+            android:id="@+id/nav_favorite"
+            android:icon="@drawable/favorite"
+            android:title="易鉴收藏" />
         <item
-            android:id="@+id/nav_task"
-            android:icon="@drawable/nav_task"
-            android:title="Tasks" />
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/setting"
+            android:title="易鉴设置" />
     </group>
 </menu>

@@ -5,12 +5,11 @@
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
     android:background="@android:color/white">
-
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
-        app:title="登录账户"
+        app:title="注册账户"
         app:titleTextAppearance="@style/Toolbartile"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -18,7 +17,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/login_layout"
+        android:id="@+id/register_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -26,13 +25,10 @@
         android:layout_marginTop="60dp"
         android:gravity="center" >
 
-        <!--标题栏-->
-
-        <!--用户名-->
         <FrameLayout
             android:id="@+id/username_layout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginTop="90dp"
             android:gravity="center" >
             <!-- android:inputType="number" -->
@@ -55,6 +51,7 @@
                 android:layout_marginBottom="0dp"
                 android:background="@drawable/account"
                 android:visibility="visible" />
+
             <Button
                 android:id="@+id/bt_username_clear"
                 android:layout_width="18dp"
@@ -65,12 +62,10 @@
                 android:background="@drawable/delete"
                 android:visibility="invisible" />
         </FrameLayout>
-
-        <!--密码-->
         <FrameLayout
             android:id="@+id/usercode_layout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_below="@id/username_layout"
             android:layout_marginTop="10dp"
             android:gravity="center" >
@@ -78,6 +73,7 @@
                 android:id="@+id/password"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
+                android:layout_marginTop="5dp"
                 android:inputType="textPassword"
                 android:maxLength="20"
                 android:theme="@style/EditText"
@@ -86,54 +82,106 @@
                 android:paddingRight="60dp" >
             </EditText>
             <ImageView
-                android:layout_width="18dp"
+                android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="left|center_vertical"
                 android:layout_marginLeft="10dp"
-                android:layout_marginBottom="3dp"
-                android:background="@drawable/password" />
-            <Button
-                android:id="@+id/bt_pwd_eye"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
                 android:layout_marginBottom="2dp"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/pwd_closed" />
-
+                android:background="@drawable/password" />
             <Button
                 android:id="@+id/bt_pwd_clear"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="45dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/delete"
+                android:visibility="invisible" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/confirmcode_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/usercode_layout"
+            android:layout_marginTop="10dp"
+            android:gravity="center" >
+            <EditText
+                android:id="@+id/confirm_password"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:theme="@style/EditText"
+                android:layout_marginTop="5dp"
+                android:hint="@string/confirm_pwd"
+                android:paddingLeft="55dp"
+                android:paddingRight="60dp" >
+            </EditText>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="10dp"
                 android:layout_marginBottom="2dp"
+                android:background="@drawable/password" />
+            <Button
+                android:id="@+id/bt_confirm_pwd_clear"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/delete"
+                android:visibility="invisible" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/nickname_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/confirmcode_layout"
+            android:gravity="center">
+            <!-- android:inputType="number" -->
+            <EditText
+                android:id="@+id/nickname"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:maxLength="20"
+                android:hint="@string/nickname"
+                android:theme="@style/EditText"
+                android:paddingLeft="55dp"
+                android:paddingRight="60dp" >
+            </EditText>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="0dp"
+                android:background="@drawable/nickname"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/bt_nickname_clear"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/delete"
                 android:visibility="invisible" />
         </FrameLayout>
         <Button
-            android:id="@+id/bt_login"
+            android:id="@+id/bt_register"
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_below="@id/usercode_layout"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nickname_layout"
             android:layout_marginTop="50dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:gravity="center"
-            android:text="登录"
+            android:text="注册"
             android:textColor="@android:color/white"
             android:textSize="18sp"/>
-        <Button
-            android:id="@+id/bt_go_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_alignRight="@id/bt_login"
-            android:layout_below="@id/bt_login"
-            android:background="#00000000"
-            android:gravity="center_vertical"
-            android:text="没有账号？去注册"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="16sp"
-            android:visibility="visible" />
     </RelativeLayout>
 </RelativeLayout>

@@ -10,28 +10,30 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/icon_image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:src="@drawable/nav_icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="25dp"/>
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/nav_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="tonygreendev@gmail.com"
         android:textColor="#FFF"
         android:textSize="14sp"
+        android:text="937131777@qq.com"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
-        android:id="@+id/mail"
+        android:id="@+id/nav_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tony Green"
+        android:text="那年盛夏好大雨"
         android:textColor="#FFF"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/username"/>
+        app:layout_constraintBottom_toTopOf="@id/nav_username"/>
 
 </android.support.constraint.ConstraintLayout>
