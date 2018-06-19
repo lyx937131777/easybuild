@@ -52,7 +52,6 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_selector"
-                    android:textColorHighlight="@color/yellow"
                     android:textOff="全部"
                     android:textOn="全部" />
 
@@ -63,7 +62,6 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_selector"
-                    android:textColorHighlight="@color/yellow"
                     android:textOff="京东"
                     android:textOn="京东" />
 
@@ -74,7 +72,6 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/button_selector"
-                    android:textColorHighlight="@color/yellow"
                     android:textOff="淘宝"
                     android:textOn="淘宝" />
             </LinearLayout>
@@ -88,27 +85,37 @@
 
                 <Button
                     android:id="@+id/order_button"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:text="综合 ▼" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:id="@+id/edit_low"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
+                    android:inputType="number|numberDecimal"
                     android:hint="最低价" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:id="@+id/edit_high"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
+                    android:inputType="number|numberDecimal"
                     android:hint="最高价" />
             </LinearLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/display_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
         </LinearLayout>
 
     </android.support.design.widget.CoordinatorLayout>

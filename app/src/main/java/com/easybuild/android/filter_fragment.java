@@ -31,7 +31,7 @@ public class filter_fragment extends Fragment
         RecyclerView recyclerView = view.findViewById(R.id.filter_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        typeList = DataSupport.where("typeName != ? and typeName != ?","all","item").find(Type.class);
+        typeList = DataSupport.where("typeName != ? and typeName != ?","all","items").find(Type.class);
         filterTypeAdapter = new FilterTypeAdapter(typeList);
         recyclerView.setAdapter(filterTypeAdapter);
         return view;

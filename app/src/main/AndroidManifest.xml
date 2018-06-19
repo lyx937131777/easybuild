@@ -34,7 +34,8 @@
         <activity
             android:name=".SearchActivity"
             android:label="" />
-        <activity android:name=".DisplayActivity"></activity>
+        <activity android:name=".DisplayActivity" />
+        <activity android:name=".FavoriteActivity"></activity>
     </application>
 
 </manifest>

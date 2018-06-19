@@ -4,6 +4,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.easybuild.android.db.User;
+import com.easybuild.android.gson.items;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +14,7 @@ import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Utility
 {
@@ -47,6 +51,7 @@ public class Utility
         return false;
     }
 
+    //注册界面
     public static boolean storeLoginUser(String response)
     {
         if (!TextUtils.isEmpty(response))
@@ -83,6 +88,7 @@ public class Utility
         return false;
     }
 
+    //返回Json数据的code值
     public static String checkCode(String response)
     {
         try
@@ -93,6 +99,41 @@ public class Utility
         {
             e.printStackTrace();
         }return "000";
+    }
+
+    //解析items对象
+    public static List<items> handleItemsResponse (String response)
+    {
+        try
+        {
+            JSONObject dataObject = new JSONObject(response);
+            JSONArray jsonArray = dataObject.getJSONArray("data");
+            String itemsJson = jsonArray.toString();
+            LogUtil.e("Utility",itemsJson);
+            return new Gson().fromJson(itemsJson,new TypeToken<List<items>>(){}.getType());
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+            LogUtil.e("Utility","GSON Wrong!!!!");
+        }
+        return null;
+    }
+    //收藏界面 解析单个item对象
+    public static items handleoneItemResponse(String response)
+    {
+        try
+        {
+            JSONObject dataObject = new JSONObject(response);
+            JSONObject jsonObject = dataObject.getJSONObject("data");
+            String itemJson = jsonObject.toString();
+            LogUtil.e("Utility",itemJson);
+            return new Gson().fromJson(itemJson,items.class);
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+            LogUtil.e("Utility","GSON Wrong!!!!");
+        }
+        return null;
     }
 
     public static boolean searchUser(String response)

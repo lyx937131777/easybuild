@@ -3,11 +3,12 @@
 
     <dbname value="easy_build" />
 
-    <version value="2" />
+    <version value="3" />
 
     <list>
         <mapping class="com.easybuild.android.db.User" />
         <mapping class="com.easybuild.android.db.Type" />
+        <mapping class="com.easybuild.android.db.Favorite" />
     </list>
 
 </litepal>

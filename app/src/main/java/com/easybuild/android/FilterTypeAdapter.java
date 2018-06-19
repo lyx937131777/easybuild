@@ -1,5 +1,6 @@
 package com.easybuild.android;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,7 +41,7 @@ public class FilterTypeAdapter  extends RecyclerView.Adapter<FilterTypeAdapter.V
     }
     @NonNull
     @Override
-    public FilterTypeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    public FilterTypeAdapter.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType)
     {
         if(mContext == null)
         {
@@ -47,6 +49,28 @@ public class FilterTypeAdapter  extends RecyclerView.Adapter<FilterTypeAdapter.V
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.filter_type_item,parent,false);
         final FilterTypeAdapter.ViewHolder holder = new FilterTypeAdapter.ViewHolder(view);
+        holder.typeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                int position = holder.getAdapterPosition();
+                SearchActivity searchActivity = (SearchActivity)mContext;
+                StringBuilder include =  new StringBuilder(searchActivity.getInclude());
+                if(isChecked)
+                {
+                    LogUtil.e("FilterTypeAdapter","Before Change : "+ include);
+                    include.replace(position,position+1,"1");
+                    LogUtil.e("FilterTypeAdapter","After Change : "+ include);
+                }else
+                {
+                    LogUtil.e("FilterTypeAdapter","Before Change : "+ include);
+                    include.replace(position,position+1,"0");
+                    LogUtil.e("FilterTypeAdapter","After Change : "+ include);
+                }
+                searchActivity.setInclude(include.toString());
+            }
+        });
 
         return holder;
     }
@@ -56,6 +80,15 @@ public class FilterTypeAdapter  extends RecyclerView.Adapter<FilterTypeAdapter.V
     {
         Type type = mTypeList.get(position);
         holder.typeCheckBox.setText("  "+type.getName()+"  ");
+        SearchActivity searchActivity = (SearchActivity)mContext;
+        String include = searchActivity.getInclude();
+        if(include.charAt(position) == '1')
+        {
+            holder.typeCheckBox.setChecked(true);
+        }else
+        {
+            holder.typeCheckBox.setChecked(false);
+        }
     }
 
     @Override

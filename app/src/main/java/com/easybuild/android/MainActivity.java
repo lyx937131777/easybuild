@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences pref;
     private String userID;
 
-    private Type[] types = {new Type("全部", R.drawable.imgall,"all"), new Type("商品", R.drawable.imgitem,"item")
+    private Type[] types = {new Type("全部", R.drawable.imgall,"all"), new Type("商品", R.drawable.imgitem,"items")
             , new Type("CPU", R.drawable.imgcpu,"cpu"), new Type("GPU", R.drawable.imggpu,"gpu"),
             new Type("主机", R.drawable.imgcase,"case"), new Type("电源", R.drawable.imgpower,"power"),
             new Type("水冷", R.drawable.imgcoolerwater,"cooler_water"), new Type("风冷", R.drawable.imgcoolerwind,"cooler_wind"),
@@ -49,10 +49,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         instance = this;
-        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navView = findViewById(R.id.nav_view);
+
+        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
@@ -75,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (item.getItemId())
                 {
                     case R.id.nav_compare:
+                        break;
+                    case R.id.nav_favorite:
+                        Intent intent_favorite = new Intent(MainActivity.this,FavoriteActivity.class);
+                        startActivity(intent_favorite);
                         break;
                     case R.id.nav_setting:
                         Intent intent_setting = new Intent(MainActivity.this, SettingsActivity
