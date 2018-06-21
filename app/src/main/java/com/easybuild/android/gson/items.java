@@ -1,8 +1,11 @@
 package com.easybuild.android.gson;
 
-import org.json.JSONObject;
+import com.google.gson.annotations.SerializedName;
 
-public class items
+import org.json.JSONObject;
+import org.litepal.crud.DataSupport;
+
+public class items extends DataSupport
 {
     private _id _id;
     private String title;
@@ -11,9 +14,135 @@ public class items
     private String itemID;
     private String comments;
     private String type;
+    private String source;
+    private String prices;
+
+    private String ueserID;
 
     private GPU gpu;
     private CPU cpu;
+
+    @SerializedName("case")
+    private Hardware mycase;
+
+    private Hardware power;
+    private Hardware cooler_water;
+    private Hardware cooler_wind;
+    private Hardware hdd;
+    private Hardware ssd;
+    private Hardware memory;
+    private Hardware motherboard;
+
+    public String getUeserID()
+    {
+        return ueserID;
+    }
+
+    public void setUeserID(String ueserID)
+    {
+        this.ueserID = ueserID;
+    }
+
+    public Hardware getMycase()
+    {
+        return mycase;
+    }
+
+    public void setMycase(Hardware mycase)
+    {
+        this.mycase = mycase;
+    }
+
+    public Hardware getPower()
+    {
+        return power;
+    }
+
+    public void setPower(Hardware power)
+    {
+        this.power = power;
+    }
+
+    public Hardware getCooler_water()
+    {
+        return cooler_water;
+    }
+
+    public void setCooler_water(Hardware cooler_water)
+    {
+        this.cooler_water = cooler_water;
+    }
+
+    public Hardware getCooler_wind()
+    {
+        return cooler_wind;
+    }
+
+    public void setCooler_wind(Hardware cooler_wind)
+    {
+        this.cooler_wind = cooler_wind;
+    }
+
+    public Hardware getHdd()
+    {
+        return hdd;
+    }
+
+    public void setHdd(Hardware hdd)
+    {
+        this.hdd = hdd;
+    }
+
+    public Hardware getSsd()
+    {
+        return ssd;
+    }
+
+    public void setSsd(Hardware ssd)
+    {
+        this.ssd = ssd;
+    }
+
+    public Hardware getMemory()
+    {
+        return memory;
+    }
+
+    public void setMemory(Hardware memory)
+    {
+        this.memory = memory;
+    }
+
+    public Hardware getMotherboard()
+    {
+        return motherboard;
+    }
+
+    public void setMotherboard(Hardware motherboard)
+    {
+        this.motherboard = motherboard;
+    }
+
+    public String getPrices()
+    {
+        return prices;
+    }
+
+    public void setPrices(String prices)
+    {
+        this.prices = prices;
+    }
+
+
+    public String getSource()
+    {
+        return source;
+    }
+
+    public void setSource(String source)
+    {
+        this.source = source;
+    }
 
     public String getType()
     {

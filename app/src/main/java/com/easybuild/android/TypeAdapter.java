@@ -21,6 +21,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder>
 {
     private Context mContext;
     private List<Type> mTypeList;
+    private int mposition;
     static class ViewHolder extends RecyclerView.ViewHolder
     {
         CardView cardView;
@@ -36,9 +37,10 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder>
         }
     }
 
-    public TypeAdapter(List<Type> typeList)
+    public TypeAdapter(List<Type> typeList,int positon)
     {
         mTypeList = typeList;
+        mposition = positon;
     }
     @NonNull
     @Override
@@ -56,11 +58,22 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder>
             public void onClick(View v)
             {
                 int position = holder.getAdapterPosition();
-                LogUtil.e("TypeAdapter",String.valueOf(position));
                 Type type = mTypeList.get(position);
-                Intent intent = new Intent(mContext,SearchActivity.class);
-                intent.putExtra("type",type.getTypeName());
-                mContext.startActivity(intent);
+                if(mposition == 0)
+                {
+                    Intent intent = new Intent(mContext,SearchActivity.class);
+                    intent.putExtra("type",type.getTypeName());
+                    mContext.startActivity(intent);
+                }else
+                {
+                    MainActivity.setCommond(3);
+                    CompareActivity compareActivity = (CompareActivity)mContext;
+                    LogUtil.e("TypeAdapter","hahahhahahahahahha"+String.valueOf(mposition));
+                    Intent intent = new Intent(compareActivity,SearchActivity.class);
+                    intent.putExtra("type",type.getTypeName());
+                    compareActivity.startActivityForResult(intent,mposition);
+                }
+
             }
         });
         return holder;

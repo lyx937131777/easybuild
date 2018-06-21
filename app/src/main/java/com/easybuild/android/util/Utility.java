@@ -3,7 +3,14 @@ package com.easybuild.android.util;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.easybuild.android.CompareActivity;
+import com.easybuild.android.FreePlanActivity;
+import com.easybuild.android.MainActivity;
+import com.easybuild.android.R;
 import com.easybuild.android.db.User;
+import com.easybuild.android.gson.CPU;
+import com.easybuild.android.gson.GPU;
+import com.easybuild.android.gson.Hardware;
 import com.easybuild.android.gson.items;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -98,26 +105,192 @@ public class Utility
         } catch (JSONException e)
         {
             e.printStackTrace();
-        }return "000";
+        }
+        return "000";
     }
 
     //解析items对象
-    public static List<items> handleItemsResponse (String response)
+    public static List<items> handleItemsResponse(String response)
     {
         try
         {
             JSONObject dataObject = new JSONObject(response);
             JSONArray jsonArray = dataObject.getJSONArray("data");
             String itemsJson = jsonArray.toString();
-            LogUtil.e("Utility",itemsJson);
-            return new Gson().fromJson(itemsJson,new TypeToken<List<items>>(){}.getType());
+            LogUtil.e("Utility", itemsJson);
+            List<items> itemsList = new Gson().fromJson(itemsJson, new TypeToken<List<items>>()
+            {
+            }.getType());
+            List<items> newitemList = new ArrayList<>();
+            for (items item : itemsList)
+            {
+                if(MainActivity.getCommond()== 2)
+                {
+                    newitemList.add(item);
+                }
+                else if (Float.valueOf(item.getPrice()) > 0)
+                {
+                    item.setPrice("￥" + item.getPrice());
+                    item.setType("items");
+                    item.setSource("京东");
+                    item.setComments("评论数：" + item.getComments());
+                    newitemList.add(item);
+                }
+            }
+            return newitemList;
         } catch (JSONException e)
         {
             e.printStackTrace();
-            LogUtil.e("Utility","GSON Wrong!!!!");
+            LogUtil.e("Utility", "GSON Wrong!!!!");
         }
         return null;
     }
+
+    //解析CPU对象
+    public static List<items> handleCPUResponse(String response)
+    {
+        try
+        {
+            JSONObject dataObject = new JSONObject(response);
+            JSONArray jsonArray = dataObject.getJSONArray("data");
+            String itemsJson = jsonArray.toString();
+            LogUtil.e("Utility", itemsJson);
+            List<items> itemsList = new ArrayList<>();
+            List<CPU> cpuList = new Gson().fromJson(itemsJson, new TypeToken<List<CPU>>()
+            {
+            }.getType());
+            for (CPU cpu : cpuList)
+            {
+                items item = new items();
+                item.set_id(cpu.get_id());
+                item.setType("cpu");
+                item.setCpu(cpu);
+                item.setTitle(cpu.getName() + "\n" + cpu.getCodename());
+                if(cpu.getClock() == null)
+                {
+                    LogUtil.e("Utility","There is a null");
+                    item.setPrice("未知");
+                }else
+                {
+                    item.setPrice(Float.valueOf(cpu.getClock())/1000+ "GHz");
+                }
+                item.setComments("Cores:" + cpu.getCores());
+                item.setImg(cpu.getImg());
+                item.setSource(cpu.getSocket());
+                itemsList.add(item);
+            }
+            return itemsList;
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+            LogUtil.e("Utility", "GSON Wrong!!!!");
+        }
+        return null;
+    }
+
+    //解析GPU对象
+    public static List<items> handleGPUResponse(String response)
+    {
+        try
+        {
+            JSONObject dataObject = new JSONObject(response);
+            JSONArray jsonArray = dataObject.getJSONArray("data");
+            String itemsJson = jsonArray.toString();
+            LogUtil.e("Utility", itemsJson);
+            List<items> itemsList = new ArrayList<>();
+            List<GPU> gpuList = new Gson().fromJson(itemsJson, new TypeToken<List<GPU>>() {}.getType());
+            for (GPU gpu : gpuList)
+            {
+                items item = new items();
+                item.set_id(gpu.get_id());
+                item.setType("gpu");
+                item.setGpu(gpu);
+                item.setTitle(gpu.getName() + "\n" + gpu.getChip());
+                if(gpu.getGPU_Clock() == null)
+                {
+                    LogUtil.e("Utility","There is a null");
+                    item.setPrice("未知");
+                }else
+                {
+                    item.setPrice(gpu.getGPU_Clock()+"MHz");
+                }
+                item.setComments("");
+                item.setImg(gpu.getImg());
+                item.setSource(gpu.getBus());
+                itemsList.add(item);
+            }
+            return itemsList;
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+            LogUtil.e("Utility", "GSON Wrong!!!!");
+        }
+        return null;
+    }
+
+    //解析其他Hardware对象
+    public static List<items> handleHardwareResponse(String response)
+    {
+        try
+        {
+            JSONObject dataObject = new JSONObject(response);
+            String type = dataObject.getString("code");
+            JSONArray jsonArray = dataObject.getJSONArray("data");
+            String itemsJson = jsonArray.toString();
+            LogUtil.e("Utility", itemsJson);
+            List<items> itemsList = new ArrayList<>();
+            List<Hardware> hardwareList = new Gson().fromJson(itemsJson, new TypeToken<List<Hardware>>() {}.getType());
+            for (Hardware hardware : hardwareList)
+            {
+                items item = new items();
+                item.set_id(hardware.get_id());
+                item.setType(type);
+                switch (type)
+                {
+                    case "case":
+                        item.setMycase(hardware);
+                        break;
+                    case "power":
+                        item.setPower(hardware);
+                        break;
+                    case "cooler_water":
+                        item.setCooler_water(hardware);
+                        break;
+                    case "cooler_wind":
+                        item.setCooler_wind(hardware);
+                        break;
+                    case "hdd":
+                        item.setHdd(hardware);
+                        break;
+                    case "ssd":
+                        item.setSsd(hardware);
+                        break;
+                    case "memory":
+                        item.setMemory(hardware);
+                        break;
+                    case "motherboard":
+                        item.setMotherboard(hardware);
+                        break;
+                    default:
+                        LogUtil.e("Utility","Type 不存在："+type);
+                        break;
+                }
+                item.setTitle(hardware.getString1());
+                item.setPrice(hardware.getString2());
+                item.setComments("");
+                item.setImg(hardware.getImg());
+                item.setSource(hardware.getString3());
+                itemsList.add(item);
+            }
+            return itemsList;
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+            LogUtil.e("Utility", "GSON Wrong!!!!");
+        }
+        return null;
+    }
+
     //收藏界面 解析单个item对象
     public static items handleoneItemResponse(String response)
     {
@@ -126,12 +299,173 @@ public class Utility
             JSONObject dataObject = new JSONObject(response);
             JSONObject jsonObject = dataObject.getJSONObject("data");
             String itemJson = jsonObject.toString();
-            LogUtil.e("Utility",itemJson);
-            return new Gson().fromJson(itemJson,items.class);
+            LogUtil.e("Utility", itemJson);
+            items item =new Gson().fromJson(itemJson, items.class);
+            item.setPrice("￥" + item.getPrice());
+            item.setType("items");
+            item.setSource("京东");
+            item.setComments("评论数：" + item.getComments());
+            return item;
         } catch (JSONException e)
         {
             e.printStackTrace();
-            LogUtil.e("Utility","GSON Wrong!!!!");
+            LogUtil.e("Utility", "GSON Wrong!!!!");
+        }
+        return null;
+    }
+
+    //收藏界面 解析单个cpu对象
+    public static items handleoneCPUResponse(String response)
+    {
+        try
+        {
+            JSONObject dataObject = new JSONObject(response);
+            JSONObject jsonObject = dataObject.getJSONObject("data");
+            String itemJson = jsonObject.toString();
+            LogUtil.e("Utility", itemJson);
+            CPU cpu = new Gson().fromJson(itemJson, CPU.class);
+            if(MainActivity.getCommond() == 2)
+            {
+                FreePlanActivity.free_item.setCpu(cpu);
+            }
+            items item = new items();
+            item.set_id(cpu.get_id());
+            item.setType("cpu");
+            item.setCpu(cpu);
+            item.setTitle(cpu.getName() + "\n" + cpu.getCodename());
+            if(cpu.getClock() == null)
+            {
+                LogUtil.e("Utility","There is a null");
+                item.setPrice("未知");
+            }else
+            {
+                item.setPrice(Float.valueOf(cpu.getClock())/1000+ "GHz");
+            }
+            item.setComments("Cores:" + cpu.getCores());
+            item.setImg(cpu.getImg());
+            item.setSource(cpu.getSocket());
+            return item;
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+            LogUtil.e("Utility", "GSON Wrong!!!!");
+        }
+        return null;
+    }
+
+    //收藏界面 解析单个gpu对象
+    public static items handleoneGPUResponse(String response)
+    {
+        try
+        {
+            JSONObject dataObject = new JSONObject(response);
+            JSONObject jsonObject = dataObject.getJSONObject("data");
+            String itemJson = jsonObject.toString();
+            LogUtil.e("Utility", itemJson);
+            GPU gpu = new Gson().fromJson(itemJson, GPU.class);
+            if(MainActivity.getCommond() == 2)
+            {
+                FreePlanActivity.free_item.setGpu(gpu);
+            }
+            items item = new items();
+            item.set_id(gpu.get_id());
+            item.setType("gpu");
+            item.setGpu(gpu);
+            item.setTitle(gpu.getName()+"\n"+gpu.getChip());
+            item.setPrice(gpu.getGPU_Clock()+"MHz");
+            item.setComments("");
+            item.setImg(gpu.getImg());
+            item.setSource(gpu.getBus());
+            return item;
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+            LogUtil.e("Utility", "GSON Wrong!!!!");
+        }
+        return null;
+    }
+
+    //收藏界面 解析单个Hardware对象
+    public static items handleoneHardwareResponse(String response)
+    {
+        try
+        {
+            JSONObject dataObject = new JSONObject(response);
+            String type = dataObject.getString("code");
+            JSONObject jsonObject = dataObject.getJSONObject("data");
+            String itemJson = jsonObject.toString();
+            LogUtil.e("Utility", itemJson);
+            Hardware hardware = new Gson().fromJson(itemJson, Hardware.class);
+            if(MainActivity.getCommond() == 2)
+            {
+                switch (type)
+                {
+                    case "case":
+                        FreePlanActivity.free_item.setMycase(hardware);
+                        break;
+                    case "power":
+                        FreePlanActivity.free_item.setPower(hardware);
+                        break;
+                    case "cooler_water":
+                        FreePlanActivity.free_item.setCooler_water(hardware);
+                        break;
+                    case "cooler_wind":
+                        FreePlanActivity.free_item.setCooler_wind(hardware);
+                        break;
+                    case "hdd":
+                        FreePlanActivity.free_item.setHdd(hardware);
+                        break;
+                    case "ssd":
+                        FreePlanActivity.free_item.setSsd(hardware);
+                        break;
+                    case "memory":
+                        FreePlanActivity.free_item.setMemory(hardware);
+                        break;
+                    case "motherboard":
+                        FreePlanActivity.free_item.setMotherboard(hardware);
+                        break;
+                }
+            }
+            items item = new items();
+            item.set_id(hardware.get_id());
+            item.setType(type);
+            switch (type)
+            {
+                case "case":
+                    item.setMycase(hardware);
+                    break;
+                case "power":
+                    item.setPower(hardware);
+                    break;
+                case "cooler_water":
+                    item.setCooler_water(hardware);
+                    break;
+                case "cooler_wind":
+                    item.setCooler_wind(hardware);
+                    break;
+                case "hdd":
+                    item.setHdd(hardware);
+                    break;
+                case "ssd":
+                    item.setSsd(hardware);
+                    break;
+                case "memory":
+                    item.setMemory(hardware);
+                    break;
+                case "motherboard":
+                    item.setMotherboard(hardware);
+                    break;
+            }
+            item.setTitle(hardware.getString1());
+            item.setPrice(hardware.getString2());
+            item.setComments("");
+            item.setImg(hardware.getImg());
+            item.setSource(hardware.getString3());
+            return item;
+        } catch (JSONException e)
+        {
+            e.printStackTrace();
+            LogUtil.e("Utility", "GSON Wrong!!!!");
         }
         return null;
     }

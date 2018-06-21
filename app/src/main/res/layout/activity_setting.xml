@@ -165,7 +165,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
-                android:text="锁屏显示to-do list"
+                android:text="锁屏推荐"
                 android:textSize="16sp"
                 android:layout_toRightOf="@id/ic_show_todolist" />
 
@@ -189,7 +189,7 @@
         android:layout_marginLeft="15dp"
         android:layout_height="20dp"
         android:layout_marginTop="30dp"
-        android:text="白名单"/>
+        android:text="易鉴购买"/>
     <RelativeLayout
         android:id="@+id/white_list"
         android:layout_width="match_parent"
@@ -216,7 +216,7 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:text="开启白名单"
+                android:text="开启购买功能"
                 android:textSize="16sp"
                 android:layout_toRightOf="@id/white_list_icon" />
 

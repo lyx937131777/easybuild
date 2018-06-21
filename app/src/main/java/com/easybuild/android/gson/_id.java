@@ -1,6 +1,8 @@
 package com.easybuild.android.gson;
 
-public class _id
+import org.litepal.crud.DataSupport;
+
+public class _id extends DataSupport
 {
     private String $oid;
 

@@ -3,12 +3,16 @@
 
     <dbname value="easy_build" />
 
-    <version value="3" />
+    <version value="7" />
 
     <list>
         <mapping class="com.easybuild.android.db.User" />
         <mapping class="com.easybuild.android.db.Type" />
         <mapping class="com.easybuild.android.db.Favorite" />
+        <mapping class="com.easybuild.android.gson.items" />
+        <mapping class="com.easybuild.android.gson.CPU" />
+        <mapping class="com.easybuild.android.gson.GPU" />
+        <mapping class="com.easybuild.android.gson.Hardware" />
     </list>
 
 </litepal>

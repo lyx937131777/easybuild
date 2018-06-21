@@ -27,15 +27,21 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".TestActivity" />
+        <activity android:name=".CompareActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".UserInfoActivity" />
         <activity
             android:name=".SearchActivity"
             android:label="" />
-        <activity android:name=".DisplayActivity" />
-        <activity android:name=".FavoriteActivity"></activity>
+        <activity
+            android:name=".DisplayActivity"
+            android:theme="@style/DisplayActivityTheme" />
+        <activity android:name=".FavoriteActivity" />
+        <activity android:name=".PlanActivity" />
+        <activity android:name=".FreePlanActivity" />
+        <activity android:name=".ArticleActivity" />
+        <activity android:name=".ShowArticleActivity"></activity>
     </application>
 
 </manifest>

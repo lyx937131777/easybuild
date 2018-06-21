@@ -37,17 +37,20 @@ public class SearchActivity extends AppCompatActivity implements PopupMenu.OnMen
 {
     private String type;
     private String order = "综合";
-    private String key = "i7";
+    private String key = "";
     private String low = "";
     private String high = "";
     private String source = "全部";
     private String include = "1000000000";
+    private int commond;
+    private String plan;
 
     private Button order_button;
     private DrawerLayout mDrawerLayout;
 
     private PreviewAdapter previewAdapter;
     private List<items> itemsList = new ArrayList<>();
+    public String[] key_value = new String[16];
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,8 +58,14 @@ public class SearchActivity extends AppCompatActivity implements PopupMenu.OnMen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         type = getIntent().getStringExtra("type");
+        commond = MainActivity.getCommond();
+        plan = getIntent().getStringExtra("plan");
 
         initDrawerLayout();
+        for(int i = 0; i < key_value.length; i++)
+        {
+            key_value[i] = "";
+        }
 
         initItems();
 
@@ -67,48 +76,176 @@ public class SearchActivity extends AppCompatActivity implements PopupMenu.OnMen
         recyclerView.setAdapter(previewAdapter);
         initsetting();
     }
+
     public void initItems()
     {
         String address = HttpUtil.LocalAddress + "/search/easySearch";
-        HttpUtil.searchItemRequest(address, type, include, translate(order), key, low, high, new Callback()
+        if(!type.equals("cpu") && !type.equals("gpu"))
         {
-            @Override
-            public void onFailure(Call call, IOException e)
+            if(commond == 2)
             {
-                LogUtil.e("SearchActivity","连接错误！！！");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException
-            {
-                final String responseData = response.body().string();
-                LogUtil.e("SearchActivity",responseData);
-                if(!Utility.checkCode(responseData).equals("false"))
+                if(type.equals("motherboard"))
                 {
-                    initItems(Utility.handleItemsResponse(responseData),Utility.checkCode(responseData));
-                }else
+                    if (plan.equals("amd"))
+                    {
+                        key = "AM4";
+                    }else
+                    {
+                        key = "LGA 1151";
+                    }
+                }else if(type.equals("memory"))
                 {
-                    LogUtil.e("SearchActivity","提交格式错误");
+                    key = "ddr4";
+                }else if(type.equals("power"))
+                {
+                    int cpuTDP = Integer.valueOf(FreePlanActivity.free_item.getCpu().getTDP());
+                    int gpuTDP = Integer.valueOf(FreePlanActivity.free_item.getGpu().getTDP());
+                    if(cpuTDP + gpuTDP <= 94)
+                    {
+                        key = "450w";
+                    }else if(cpuTDP + gpuTDP <= 113)
+                    {
+                        key = "550w";
+                    }else if (cpuTDP + gpuTDP <= 159)
+                    {
+                        key = "650w";
+                    }else
+                    {
+                        key = "750w";
+                    }
                 }
             }
-        });
+
+            HttpUtil.searchItemRequest(address, type, include, translate(order), key, low, high, new
+                    Callback()
+                    {
+                        @Override
+                        public void onFailure(Call call, IOException e)
+                        {
+                            runOnUiThread(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    Toast.makeText(SearchActivity.this, "连接错误", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException
+                        {
+                            final String responseData = response.body().string();
+                            LogUtil.e("SearchActivity", responseData);
+                            String code = Utility.checkCode(responseData);
+                            switch (code)
+                            {
+                                case "all":
+                                case "items":
+                                    initItems(Utility.handleItemsResponse(responseData));
+                                    break;
+                                case "false":
+                                    runOnUiThread(new Runnable()
+                                    {
+                                        @Override
+                                        public void run()
+                                        {
+                                            Toast.makeText(SearchActivity.this, "未知错误", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                    break;
+                                default:
+                                    initItems(Utility.handleHardwareResponse(responseData));
+                                    break;
+                            }
+                        }
+                    });
+        }else
+        {
+            if(commond == 2 &&type.equals("cpu"))
+            {
+                if (plan.equals("amd"))
+                {
+                    key_value[8] = "Socket";
+                    key_value[9] = "AM4";
+                }else if(plan.equals("intel"))
+                {
+                    key_value[0] = "Name";
+                    key_value[1] = "core i";
+                    key_value[8] = "Socket";
+                    key_value[9] = "1151";
+                }
+            }else if(commond == 2 && type.equals("gpu"))
+            {
+                key_value[4] = "Bus";
+                key_value[5] = "PCIe 3.0 x16";
+            }
+
+            LogUtil.e("SearchActivity","发送请求");
+            HttpUtil.searchCPUGPURequest(address, type, key_value, new Callback()
+            {
+                @Override
+                public void onFailure(Call call, IOException e)
+                {
+                    runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            Toast.makeText(SearchActivity.this, "连接错误", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException
+                {
+                    final String responseData = response.body().string();
+                    LogUtil.e("SearchActivity", responseData);
+                    String code = Utility.checkCode(responseData);
+                    switch (code)
+                    {
+                        case "cpu":
+                            initItems(Utility.handleCPUResponse(responseData));
+                            break;
+                        case "gpu":
+                            initItems(Utility.handleGPUResponse(responseData));
+                            break;
+                        default:
+                            runOnUiThread(new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    Toast.makeText(SearchActivity.this, "无结果", Toast.LENGTH_LONG)
+                                            .show();
+                                }
+                            });
+                            break;
+                    }
+                }
+            });
+        }
+
     }
 
-    private void initItems(List<items> newList,String codetype)
+    private void initItems(List<items> newList)
     {
-        itemsList.clear();
-        if(newList != null)
+        if (newList == null)
         {
-            for (items mitem : newList)
+            runOnUiThread(new Runnable()
             {
-                if(Float.valueOf(mitem.getPrice()) > 0)
+                @Override
+                public void run()
                 {
-                    mitem.setType(codetype);
-                    itemsList.add(mitem);
+                    Toast.makeText(SearchActivity.this, "搜索无结果", Toast.LENGTH_LONG).show();
                 }
-            }
+            });
+            return;
         }
-        LogUtil.e("SearchActivity","得到itemslist！！");
+        itemsList.clear();
+        itemsList.addAll(newList);
+        LogUtil.e("SearchActivity", "得到itemslist！！啦啦啦啦");
         runOnUiThread(new Runnable()
         {
             @Override
@@ -234,13 +371,6 @@ public class SearchActivity extends AppCompatActivity implements PopupMenu.OnMen
             LinearLayout setting_ll = findViewById(R.id.setting_layout);
             source_ll.setVisibility(View.GONE);
             setting_ll.setVisibility(View.GONE);
-            if (type.equals("cpu") || type.equals("gpu"))
-            {
-
-            } else
-            {
-
-            }
         }
     }
 
@@ -253,13 +383,16 @@ public class SearchActivity extends AppCompatActivity implements PopupMenu.OnMen
                 finish();
                 break;
             case R.id.menu_search:
-                EditText keytext = findViewById(R.id.search_key);
-                EditText lowtext = findViewById(R.id.edit_low);
-                EditText hightext = findViewById(R.id.edit_high);
-                key = keytext.getText().toString();
-                low = lowtext.getText().toString();
-                high = hightext.getText().toString();
-                initItems();
+                if(commond == 1 ||commond == 3)
+                {
+                    EditText keytext = findViewById(R.id.search_key);
+                    EditText lowtext = findViewById(R.id.edit_low);
+                    EditText hightext = findViewById(R.id.edit_high);
+                    key = keytext.getText().toString();
+                    low = lowtext.getText().toString();
+                    high = hightext.getText().toString();
+                    initItems();
+                }
                 break;
             case R.id.menu_filter:
                 mDrawerLayout.openDrawer(GravityCompat.END);

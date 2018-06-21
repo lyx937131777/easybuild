@@ -1,7 +1,12 @@
 package com.easybuild.android.gson;
 
-public class GPU
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
+
+public class GPU extends DataSupport
 {
+    private _id _id;
     //型号
     private String Name;
     //架构
@@ -13,9 +18,9 @@ public class GPU
     //显存大小
     private String Memory_Size;
     //显存类型
-    private String Memory_type;
+    private String Memory_Type;
     //显存位宽
-    private String Memory_bus;
+    private String Memory_Bus;
     //核心频率
     private String GPU_Clock;
     //着色单元
@@ -24,6 +29,39 @@ public class GPU
     private String ROPs;
     private String TDP;
     private String Multiplier;
+
+    private String img;
+
+    private List<String> itemIDs;
+
+    public List<String> getItemIDs()
+    {
+        return itemIDs;
+    }
+
+    public void setItemIDs(List<String> itemIDs)
+    {
+        this.itemIDs = itemIDs;
+    }
+    public String getImg()
+    {
+        return img;
+    }
+
+    public void setImg(String img)
+    {
+        this.img = img;
+    }
+
+    public com.easybuild.android.gson._id get_id()
+    {
+        return _id;
+    }
+
+    public void set_id(com.easybuild.android.gson._id _id)
+    {
+        this._id = _id;
+    }
 
     public String getName()
     {
@@ -75,24 +113,24 @@ public class GPU
         Memory_Size = memory_Size;
     }
 
-    public String getMemory_type()
+    public String getMemory_Type()
     {
-        return Memory_type;
+        return Memory_Type;
     }
 
-    public void setMemory_type(String memory_type)
+    public void setMemory_Type(String memory_type)
     {
-        Memory_type = memory_type;
+        Memory_Type = memory_type;
     }
 
-    public String getMemory_bus()
+    public String getMemory_Bus()
     {
-        return Memory_bus;
+        return Memory_Bus;
     }
 
-    public void setMemory_bus(String memory_bus)
+    public void setMemory_Bus(String memory_bus)
     {
-        Memory_bus = memory_bus;
+        Memory_Bus = memory_bus;
     }
 
     public String getGPU_Clock()

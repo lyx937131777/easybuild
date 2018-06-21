@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
 import com.easybuild.android.db.Type;
 import com.easybuild.android.db.User;
+import com.easybuild.android.gson.items;
 import com.easybuild.android.util.LogUtil;
 
 import org.litepal.crud.DataSupport;
@@ -30,13 +32,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 {
     private DrawerLayout mDrawerLayout;
     public static MainActivity instance = null;
+    private static int commond = 1;
 
     private SharedPreferences pref;
     private String userID;
 
     private Type[] types = {new Type("全部", R.drawable.imgall,"all"), new Type("商品", R.drawable.imgitem,"items")
             , new Type("CPU", R.drawable.imgcpu,"cpu"), new Type("GPU", R.drawable.imggpu,"gpu"),
-            new Type("主机", R.drawable.imgcase,"case"), new Type("电源", R.drawable.imgpower,"power"),
+            new Type("机箱", R.drawable.imgcase,"case"), new Type("电源", R.drawable.imgpower,"power"),
             new Type("水冷", R.drawable.imgcoolerwater,"cooler_water"), new Type("风冷", R.drawable.imgcoolerwind,"cooler_wind"),
             new Type("HDD", R.drawable.imghdd,"hdd"), new Type("SSD", R.drawable.imgssd,"ssd"),
             new Type("内存", R.drawable.imgmemory,"memory"), new Type("主板", R.drawable.imgmotherboard,"motherboard")};
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new TypeAdapter(typeList);
+        adapter = new TypeAdapter(typeList,0);
         recyclerView.setAdapter(adapter);
 
         navView.setNavigationItemSelectedListener(new NavigationView
@@ -76,6 +79,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (item.getItemId())
                 {
                     case R.id.nav_compare:
+                        Intent intent_compare = new Intent(MainActivity.this,CompareActivity.class);
+                        startActivity(intent_compare);
+                        break;
+                    case R.id.nav_plan:
+                        Intent intent_plan = new Intent(MainActivity.this,PlanActivity.class);
+                        startActivity(intent_plan);
+                        break;
+                    case R.id.nac_article:
+                        Intent intent_article = new Intent(MainActivity.this,ArticleActivity.class);
+                        startActivity(intent_article);
                         break;
                     case R.id.nav_favorite:
                         Intent intent_favorite = new Intent(MainActivity.this,FavoriteActivity.class);
@@ -120,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initTypes()
     {
         typeList.clear();
+        //DataSupport.deleteAll(Type.class);
         for (int i = 0; i < types.length; i++)
         {
             typeList.add(types[i]);
@@ -155,5 +169,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    public static int getCommond()
+    {
+        return commond;
+    }
+
+    public static void setCommond(int commond)
+    {
+        MainActivity.commond = commond;
     }
 }

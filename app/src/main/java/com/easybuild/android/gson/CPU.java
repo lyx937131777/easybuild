@@ -1,7 +1,12 @@
 package com.easybuild.android.gson;
 
-public class CPU
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
+
+public class CPU extends DataSupport
 {
+    private _id _id;
     //型号
     private String Name;
     //架构
@@ -16,6 +21,7 @@ public class CPU
     private String Process;
     //核心频率
     private String Clock;
+    private String Multi;
     //一级缓存
     private String CacheL1;
     private String CacheL2;
@@ -23,6 +29,50 @@ public class CPU
     private String TDP;
     //上市时间
     private String Released;
+
+    private String img;
+
+    private List<String> itemIDs;
+
+    public List<String> getItemIDs()
+    {
+        return itemIDs;
+    }
+
+    public void setItemIDs(List<String> itemIDs)
+    {
+        this.itemIDs = itemIDs;
+    }
+
+    public String getMulti()
+    {
+        return Multi;
+    }
+
+    public void setMulti(String multi)
+    {
+        Multi = multi;
+    }
+
+    public com.easybuild.android.gson._id get_id()
+    {
+        return _id;
+    }
+
+    public void set_id(com.easybuild.android.gson._id _id)
+    {
+        this._id = _id;
+    }
+
+    public String getImg()
+    {
+        return img;
+    }
+
+    public void setImg(String img)
+    {
+        this.img = img;
+    }
 
     public String getName()
     {
