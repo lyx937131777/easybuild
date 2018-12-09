@@ -241,7 +241,7 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.ViewHold
                 String userID = pref.getString("userID", null);
                 if(mitems.getType().equals("freeplan"))
                 {
-
+                    LogUtil.e("PreviewAdapter","FreePlan");
                 }else
                 {
                     String favorite_id = mitems.get_id().get$oid();
@@ -263,7 +263,6 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.ViewHold
                         LogUtil.e("PreviewAdapter","OFF!!!    "+position);
                     }
                 }
-
             }
         });
         return holder;
@@ -283,7 +282,7 @@ public class PreviewAdapter extends RecyclerView.Adapter<PreviewAdapter.ViewHold
         String userID = pref.getString("userID", null);
         if(mitems.getType().equals("freeplan"))
         {
-
+            LogUtil.e("PreviewAdapter","FreePlan");
         }else
         {
             String favorite_id = mitems.get_id().get$oid();

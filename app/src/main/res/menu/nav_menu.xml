@@ -10,7 +10,7 @@
             android:icon="@drawable/plan"
             android:title="易鉴装机" />
         <item
-            android:id="@+id/nac_article"
+            android:id="@+id/nav_article"
             android:icon="@drawable/article"
             android:title="易鉴好文" />
         <item

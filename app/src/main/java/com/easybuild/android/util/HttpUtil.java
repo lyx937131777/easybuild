@@ -14,7 +14,7 @@ import okhttp3.RequestBody;
 
 public class HttpUtil
 {
-    public static final String LocalAddress = "http://47.96.102.28:8080/liteServer";
+    public static final String LocalAddress = "http://139.199.15.80:8080/liteServer";
 
     public static void sendOkHttpRequest(String address, okhttp3.Callback callback)
     {

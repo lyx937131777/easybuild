@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Intent intent_plan = new Intent(MainActivity.this,PlanActivity.class);
                         startActivity(intent_plan);
                         break;
-                    case R.id.nac_article:
+                    case R.id.nav_article:
                         Intent intent_article = new Intent(MainActivity.this,ArticleActivity.class);
                         startActivity(intent_article);
                         break;
